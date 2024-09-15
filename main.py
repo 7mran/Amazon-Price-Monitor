@@ -21,38 +21,47 @@ urls = ["https://www.amazon.co.uk/Apple-Smartwatch-Midnight-Aluminium-Detection/
 def check_price(urls):
 
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"}
-
     file_exists = os.path.exists('priceMonitorDataFeed.csv')
 
     for url in urls:
+        try:
+            # Attempting to retrieve the webpage content
+            page = requests.get(url, headers=headers)
+            page.raise_for_status()  # Raise an error if the page couldn't be retrieved
 
-        page = requests.get(url, headers=headers)
+            # Scraping the relevant html from the webpages
+            soup1 = BeautifulSoup(page.content, 'html.parser')
+            soup2 = BeautifulSoup(soup1.prettify(), 'html.parser')
 
-        # Scraping the relevant html from the webpages
-        soup1 = BeautifulSoup(page.content, 'html.parser')
-        soup2 = BeautifulSoup(soup1.prettify(), 'html.parser')
-        title = soup2.find(id='productTitle').get_text(strip=True)
-        price = soup2.find('span', class_='aok-offscreen').get_text(strip=True)
-        price = re.search(r'£(\d+\.\d+)', price).group(1)
+            # Extract product title and price
+            title = soup2.find(id='productTitle').get_text(strip=True)
+            price = soup2.find('span', class_='aok-offscreen').get_text(strip=True)
+            price = re.search(r'£(\d+\.\d+)', price).group(1)
 
-        today = datetime.date.today()
+            today = datetime.date.today()
 
-        header = ['Title', 'Price (GBP)', 'Date']
-        data = [title, price, today]
+            header = ['Title', 'Price (GBP)', 'Date']
+            data = [title, price, today]
 
-        with open('priceMonitorDataFeed.csv', 'a+', newline='', encoding='UTF8') as file:
-            writer = csv.writer(file)
+            with open('priceMonitorDataFeed.csv', 'a+', newline='', encoding='UTF8') as file:
+                writer = csv.writer(file)
 
-            if not file_exists or os.stat('priceMonitorDataFeed.csv').st_size == 0:
-                writer.writerow(header)
-                file_exists = True
+                if not file_exists or os.stat('priceMonitorDataFeed.csv').st_size == 0:
+                    writer.writerow(header)
+                    file_exists = True
 
-            writer.writerow(data)
-            print('Current process successful, processing next request')
+                writer.writerow(data)
+
+            print(f"Successfully processed: {title}")
+
+        except Exception as e:
+            # If any error occurs, skip and return the product that caused the error
+            print(f"Unable to retrieve data for URL: {url}. Error: {str(e)}")
+
 
 # Runs the check_price function after regular intervals, appending the data to the .csv file
 while(True):
     check_price(urls)
     data_feed = pd.read_csv(r'priceMonitorDataFeed.csv')
     print(data_feed)
-    time.sleep(300)
+    time.sleep(300) # Sleep for x seconds before repeating the process
