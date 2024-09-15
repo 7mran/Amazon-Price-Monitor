@@ -7,7 +7,7 @@ import pandas as pd
 import re
 import datetime
 import os
-
+from nextcord.ext import commands
 
 urls = ["https://www.amazon.co.uk/Apple-Smartwatch-Midnight-Aluminium-Detection/dp/B0CHX9M2NP/ref=asc_df_B0CHX9M2NP/?tag=googshopuk-21&linkCode=df0&hvadid=696285193871&hvpos=&hvnetw=g&hvrand=8258149886473685580&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9046009&hvtargid=pla-2281435175938&psc=1&mcid=b8af23ca98ec3ca59f96a8b37231048e&th=1&psc=1&hvocijid=8258149886473685580-B0CHX9M2NP-&hvexpln=74&gad_source=1",
         "https://www.amazon.co.uk/Apple-Watch-Smartwatch-Aluminium-Always/dp/B0DGHYD4P4/ref=sr_1_3?crid=K7CPU7ZZGOPM&dib=eyJ2IjoiMSJ9.1GsX_-RzudiusB1CQqnoS0LplXkMydeKIyc75Kq51WusJ83BdkNu_KPKE305YbI_011UrpCAgaNIk4aElV5gzTbTd441KAdbxBVnTRYJCe0ueB1x9WlZv4qnryvhH_POpTsuuz8MyC1y6kz1_MIZNSI2wwiEdwLNwJ1a65D4LyQtAYESa0w-669nXZPbuRNxeNhOKUfCp3NaEqEMTbR9jLDvPEA3YgFYE-eQlZp7a0M.OOeX5SSXAhxRDqsv7xfiznFYzS3iGAmjbbUheUcTKaY&dib_tag=se&keywords=Apple+Watch+Series+10+GPS+42+mm+Smartwatch+with+Jet+Black+Aluminium+Case+with+Black+Sport+Band+-+S%2FM.+Fitness+Tracker%2C+ECG+App%2C+Always-On+Retina+Display%2C+Water+Resistant&qid=1726270527&sprefix=apple+watch+series+10+gps+42+mm+smartwatch+with+jet+black+aluminium+case+with+black+sport+band+-+s%2Fm.+fitness+tracker+ecg+app+always-on+retina+display+water+resistant%2Caps%2C60&sr=8-3",
@@ -57,6 +57,12 @@ def check_price(urls):
         except Exception as e:
             # If any error occurs, skip and return the product that caused the error
             print(f"Unable to retrieve data for URL: {url}. Error: {str(e)}")
+
+bot = commands.Bot(command_prefix="!")
+@bot.command(name="display datafeed")
+async def SendMessage(ctx):
+    await ctx.send(pd.read_csv(r'priceMonitorDataFeed.csv'))
+
 
 
 # Runs the check_price function after regular intervals, appending the data to the .csv file
