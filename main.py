@@ -18,12 +18,15 @@ urls = ["https://www.amazon.co.uk/Apple-Smartwatch-Midnight-Aluminium-Detection/
         "https://www.amazon.co.uk/Apple-iPhone-128-Intelligence-Ultramarine/dp/B0DGHV5FF8/ref=sr_1_3?crid=7XAGQZN97MK5&dib=eyJ2IjoiMSJ9.G4QLRhZZ1TDHFiQtjhYRFDrmVkIPOCqegsTX1-M7ru3qVeUYGmHuvU3uMRSEQgQo-27iwGboGGDeepfbGIN7dcXSu0ixHHTfboW9Fj-ICdhQnXrlBASCsKT42p8-3FGh3Rtrq2UDC3CIcjr8sYYQzCCxMBpraxpjsVgpu9b_DO3Xte5OppbTO6s_5E5LtB7kKV52xW4d0nEsOWDoiLIDuRkscXws0x5k9lf-YvVw1R8.VWklYycKPEFe7jka1qroWjx9gabus1Z6BNXc-1TvIrE&dib_tag=se&keywords=iphone+16&qid=1726270699&sprefix=iphone%2Caps%2C84&sr=8-3",
         "https://www.amazon.co.uk/Playstation-711719577157-PlayStation-Console-Slim/dp/B0CM9VHGY7/ref=sr_1_4?crid=1TGN1215BU95R&dib=eyJ2IjoiMSJ9.LkyEB4b8roL9SBGlmTuXTlhw1vNwQcOtOM8oTfVMAKTwgPyGfk4dsjVCKkbOgOqzXLUwVrGFXClHjg9ymdtqzuGsxnXAMCZ4k5UYCN2gBpC6A5kSUoTbrxXpm8123l1rigYpA7ikCMjGVnjXtEHlg8DrLXRJVx6L-y7rBEyEdsrlR1uStJc97Co3FGaYbh3QWDlFxdOXIAGlUGp9xsDUDikwtb7iN1P9YFXZ3Wj3d_Y.s1iKQTW8ifBVgAu4CjyZbhnRbQeBtgrGli3cEteBo04&dib_tag=se&keywords=ps5&qid=1726270842&sprefix=ps5%2Caps%2C88&sr=8-4",
         "https://www.amazon.co.uk/PlayStation-5-Digital-Console-Slim/dp/B0CM9VKQ5N/ref=sr_1_1?crid=VUP73NGN2CRK&dib=eyJ2IjoiMSJ9.LkyEB4b8roL9SBGlmTuXTkB_q8ig1BvBWUL7q5SPDRL4cEqUbvPONyn8uU-9BgjZgFk1h3CcXYDWwAUiwmGrRJY0gV2l82afYdz-5hUOrCg_IC1u15vXz2HstYgFqR5s2IfBDEcAb_SfpMhYlOVth0W8p3TPJnTQL9DVjXOKvjNDqoCrqmmbiQS4whWgfQWmgnq96vCGGN1pixK82E191JjEQdciaDS18wRGbMES8Bg.LOMTx0OHeGqZy3_SWJvUvxYBRtuKFfX3Uyb2dL8hlZw&dib_tag=se&keywords=ps5%2Bpro&qid=1726270979&sprefix=ps5%2Bpro%2Caps%2C78&sr=8-1&th=1",
-        "https://www.amazon.co.uk/Apple-MU8F2ZM-A-Pencil-Generation/dp/B07K2PK3BV/ref=sr_1_4?crid=2LGR6DZYLYS0A&dib=eyJ2IjoiMSJ9.S3aK0T1H6AYgGDU1xJai9KM2Lg4ZSdV-J2POCvb9U7vTo-xvP2M15MJcr70eBdI3ZcIRZpqpU11OGJUD9G1JQuYw4OPA6f8Cu6uPW3CUPjZTPlSaYCKvxyZZWMEo7Bwo6gni1VGir106NLwOrpd2zwKvMJ2hmJ-TnvXF7mHCQrhWTQJiEe925SwYcjLQ1rP_m0yDhIlov0gti2rLy50s1O9rgziuqWiLi2Byct1-Kyo.HvdujxKh9KKZhgRQ4h-_x6g824oanasQXETOZSj9VB0&dib_tag=se&keywords=apple+pen&qid=1726271038&sprefix=apple+pen%2Caps%2C121&sr=8-4"]
+        "https://www.amazon.co.uk/Apple-MU8F2ZM-A-Pencil-Generation/dp/B07K2PK3BV/ref=sr_1_4?crid=2LGR6DZYLYS0A&dib=eyJ2IjoiMSJ9.S3aK0T1H6AYgGDU1xJai9KM2Lg4ZSdV-J2POCvb9U7vTo-xvP2M15MJcr70eBdI3ZcIRZpqpU11OGJUD9G1JQuYw4OPA6f8Cu6uPW3CUPjZTPlSaYCKvxyZZWMEo7Bwo6gni1VGir106NLwOrpd2zwKvMJ2hmJ-TnvXF7mHCQrhWTQJiEe925SwYcjLQ1rP_m0yDhIlov0gti2rLy50s1O9rgziuqWiLi2Byct1-Kyo.HvdujxKh9KKZhgRQ4h-_x6g824oanasQXETOZSj9VB0&dib_tag=se&keywords=apple+pen&qid=1726271038&sprefix=apple+pen%2Caps%2C121&sr=8-4"
+        ]
 
 def check_price(urls):
 
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"}
     file_exists = os.path.exists('priceMonitorDataFeed.csv')
+    price_changed = False  # Flag to track if a price has changed
+    price_change_details = ""  # String to collect details for the email alert
 
     for url in urls:
         try:
@@ -54,12 +57,35 @@ def check_price(urls):
 
                 writer.writerow(data)
 
-            print(f"Successfully processed: {title}")
+                # Load the CSV data into a DataFrame to compare prices
+                df = pd.read_csv('priceMonitorDataFeed.csv')
+
+                # Acquire the previous price of the product
+                product_history = df[df['Title'] == title]
+
+                if len(product_history) > 1:
+                    # Compare the last two entries for a change in price
+                    last_price = product_history.iloc[-2]['Price (GBP)']
+                    current_price = product_history.iloc[-1]['Price (GBP)']
+
+                    if float(current_price) != float(last_price):
+                        print(
+                            f"Price change detected for {title}: Old Price: £{last_price}, New Price: £{current_price}")
+                        price_changed = True
+                        price_change_details += f"{title}: Old Price: £{last_price}, New Price: £{current_price}\n"
+                    else:
+                        print(f"No price change for {title}. Current Price: £{current_price}")
+                else:
+                    # If there are no previous entries, then the product will be logged for the first time
+                    print(f"First entry for {title}. Price: £{price}")
 
         except Exception as e:
             # If any error occurs, skip and return the product that caused the error
             print(f"Unable to retrieve data for URL: {url}. Error: {str(e)}")
 
+    return price_changed, price_change_details
+
+# Basic function which enables the user to send notifications via email
 def email_alert(subject, body, to):
     msg = EmailMessage()
     msg.set_content(body)
@@ -79,9 +105,15 @@ def email_alert(subject, body, to):
 
 
 # Runs the check_price function after regular intervals, appending the data to the .csv file
-while(True):
-    check_price(urls)
-    data_feed = pd.read_csv(r'priceMonitorDataFeed.csv')
-    print(data_feed)
-    email_alert("Price Updates", "The price of a listing you have been monitoring has been updated", "insertyourgmail@gmail.com")
-    time.sleep(300) # Sleep for x seconds before repeating the process
+while True:
+    price_changed, price_change_details = check_price(urls)
+
+    if price_changed:
+        # Send email only if a price change is detected
+        subject = "Price Updates"
+        body = f"The following products have had price changes:\n\n{price_change_details}"
+        email_alert(subject,body,"insertyourgmail@gmail.com")
+
+    time.sleep(300)# Sleep for x seconds before repeating the process
+
+
