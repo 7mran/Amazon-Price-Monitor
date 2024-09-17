@@ -64,23 +64,22 @@ def check_price(urls):
                 product_history = df[df['Title'] == title]
 
                 if len(product_history) > 1:
-                    # Compare the last two entries for a change in price
-                    last_price = product_history.iloc[-2]['Price (GBP)']
-                    current_price = product_history.iloc[-1]['Price (GBP)']
+                    # Compare the last entry with the new entry for a change in price
+                    last_price = product_history.iloc[-1]['Price (GBP)']
 
-                    if float(current_price) != float(last_price):
+                    if float(price) != float(last_price):
                         print(
-                            f"Price change detected for {title}: Old Price: £{last_price}, New Price: £{current_price}")
+                            f"Price change detected for {title}: Old Price: £{last_price}, New Price: £{price}")
                         price_changed = True
-                        price_change_details += f"{title}: Old Price: £{last_price}, New Price: £{current_price}\n"
+                        price_change_details += f"{title}:\nOld Price: £{last_price}\nNew Price: £{price}\nProduct URL: {url}\n\n"
                     else:
-                        print(f"No price change for {title}. Current Price: £{current_price}")
+                        print(f"No price change for {title}. Current Price: £{price}")
                 else:
                     # If there are no previous entries, then the product will be logged for the first time
                     print(f"First entry for {title}. Price: £{price}")
 
         except Exception as e:
-            # If any error occurs, skip and return the product that caused the error
+            # If any errors occur, skip and return the product that caused the error
             print(f"Unable to retrieve data for URL: {url}. Error: {str(e)}")
 
     return price_changed, price_change_details
@@ -94,7 +93,7 @@ def email_alert(subject, body, to):
 
     user = "insertyourgmail@gmail.com"
     msg['from'] = user
-    password = "xxxxxxxxxxxxxxxx"
+    password = "XXXXXXXXXXXXXXXX"
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
@@ -110,9 +109,7 @@ while True:
 
     if price_changed:
         # Send email only if a price change is detected
-        subject = "Price Updates"
-        body = f"The following products have had price changes:\n\n{price_change_details}"
-        email_alert(subject,body,"insertyourgmail@gmail.com")
+        email_alert("Price Updates",price_change_details,"insertyourgmail@gmail.com")
 
     time.sleep(300)# Sleep for x seconds before repeating the process
 
