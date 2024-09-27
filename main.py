@@ -15,7 +15,7 @@ urls = []# Insert the urls of the Amazon products you want to monitor
 
 def check_price(urls):
 
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"}
+    headers = {"User-Agent": "your-user-agent-string-here"}# Insert your user agent here
     file_exists = os.path.exists('priceMonitorDataFeed.csv')
     price_changed = False  # Flag to track if a price has changed
     price_change_details = ""  # String to collect details for the email alert

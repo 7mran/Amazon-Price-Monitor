@@ -35,6 +35,22 @@ This is a Python-based web scraping tool that tracks product prices on Amazon UK
 
 3. Store this app password securely. You will need it for the next steps.
 
+### Inserting Your User-Agent:
+
+- The script requires your User-Agent string for web scraping.
+- To find your User-Agent:
+  - Visit https://httpbin.org/get.
+  - In the JSON response, locate the "user-agent" field. It will look something like:
+  ```bash
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  ``` 
+  - Copy your User-Agent string
+  - Insert it in the headers variable within the code as shown:
+  ```bash
+  - headers = {
+    "User-Agent": "your-user-agent-string-here"
+    }
+    ```
 ### Installation
 
 1. Clone the repository:
